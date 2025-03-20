@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Practice - Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Practice";
+        var mkdocs_page_input_path = "practice.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Laboratory 1</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../task1_1/">Task1</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task1_2/">Task2</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task1_3/">Task3</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task1_4/">Task4</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../task1_5/">Task5</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../lab2/">Laboratory 2</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../lab3/">Laboratory 3</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../lab4/">Laboratory 4</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Practice</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#_1">Зарегервированный тур пользователя</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_2">Резервирования туров</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#_3">Количество бронирований у пользователя</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Practice</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="1">Задание 1.</h1>
+<h2 id="_1">Зарегервированный тур пользователя</h2>
+<pre><code>&gt;&gt;&gt; from tours.models import Reservation
+&gt;&gt;&gt; from django.contrib.auth.models import User
+&gt;&gt;&gt; user = User.objects.get(username='nika') 
+&gt;&gt;&gt; reservations = Reservation.objects.filter(user=user)
+&gt;&gt;&gt; for res in reservations:
+...     print(res.tour.name, res.reservation_date)
+... 
+Супер Тур по России 2025-01-22 07:43:10.092116+00:00
+</code></pre>
+<h2 id="_2">Резервирования туров</h2>
+<pre><code>&gt;&gt;&gt; from tours.models import Tour
+&gt;&gt;&gt; tours = Tour.objects.prefetch_related('reservations')
+&gt;&gt;&gt; 
+&gt;&gt;&gt; for tour in tours:
+...     print(f&quot;Тур: {tour.name}&quot;)
+...     for res in tour.reservations.all():
+...         print(f&quot;  - {res.user.username} ({res.reservation_date})&quot;)
+... 
+Тур: Супер Тур по России
+  - test (2025-01-21 19:48:21.966985+00:00)
+  - nika (2025-01-22 07:43:10.092116+00:00)
+
+</code></pre>
+<h2 id="_3">Количество бронирований у пользователя</h2>
+<pre><code>&gt;&gt;&gt; from tours.models import Reservation
+&gt;&gt;&gt; user = User.objects.get(username='nika') 
+&gt;&gt;&gt; count = Reservation.objects.filter(user=user).count()
+&gt;&gt;&gt; print(f&quot;Всего бронирований у {user.username}: {count}&quot;)
+Всего бронирований у nika: 1
+</code></pre>
+<h1 id="2">Задание 2.</h1>
+<h2 id="_4">Создаем несколько тур агенств и выводим все существующие</h2>
+<pre><code>&gt;&gt;&gt; from tours.models import TourAgency
+&gt;&gt;&gt; agency = TourAgency.objects.create(name='Горячо не только летом')
+&gt;&gt;&gt; print(TourAgency.objects.all())
+&lt;QuerySet [&lt;TourAgency: &quot;Лучший Турист&quot;&gt;, &lt;TourAgency: &quot;Пегас Туристик&quot;&gt;, &lt;TourAgency: &quot;FUN&amp;SUN&quot;&gt;, &lt;TourAgency: &quot;КОРАЛ Трэвэл&quot;&gt;, &lt;TourAgency: &quot;Библио Глобус&quot;&gt;, &lt;TourAgency: &quot;Планета Сочи&quot;&gt;, &lt;TourAgency: &quot;Балкан&quot;&gt;, &lt;TourAgency: Sunshine Travels&gt;, &lt;TourAgency: Adventure Co.&gt;, &lt;TourAgency: Luxury Getaways&gt;, &lt;TourAgency: Sunshine Travels&gt;, &lt;TourAgency: Adventure Co.&gt;, &lt;TourAgency: Luxury Getaways&gt;, &lt;TourAgency: Sunshine&gt;, &lt;TourAgency: Летайте с нами!&gt;, &lt;TourAgency: Горячо не только летом&gt;]&gt;
+&gt;&gt;&gt; 
+</code></pre>
+<h2 id="_5">Создаем туры и выводим все существующие</h2>
+<pre><code>&gt;&gt;&gt; from tours.models import Tour, TourAgency
+&gt;&gt;&gt; from datetime import date
+&gt;&gt;&gt; agency, created = TourAgency.objects.get_or_create(name='Горячо не только летом')
+&gt;&gt;&gt; tour = Tour.objects.create(
+...     name='Добро пожаловать в Италию!',
+...     agency=agency,  # Привязываем к агентству
+...     description='Описание тура по Италии...',
+...     start_date=date(2025, 6, 1), 
+...     end_date=date(2025, 6, 14), 
+...     payment_terms='Оплата по факту',
+...     country='Италия'
+... )
+&gt;&gt;&gt; 
+&gt;&gt;&gt; print(Tour.objects.all())
+&lt;QuerySet [&lt;Tour: Супер Тур по России&gt;, &lt;Tour: nika&gt;, &lt;Tour: Добро пожаловать в Италию!&gt;]&gt;
+&gt;&gt;&gt; 
+</code></pre>
+<h2 id="_6">Резервируем тур</h2>
+<pre><code>&gt;&gt;&gt; from django.contrib.auth.models import User
+&gt;&gt;&gt; from tours.models import Reservation
+&gt;&gt;&gt; user = User.objects.get(username='nika') 
+&gt;&gt;&gt; reservation = Reservation.objects.create(
+...     tour=tour,
+...     user=user,
+...     confirmed=True
+... )
+&gt;&gt;&gt; 
+</code></pre>
+<h1 id="3">Задание 3.</h1>
+<h2 id="_7">Вывод даты начала самого старого тура</h2>
+<pre><code>&gt;&gt;&gt; from django.db.models import Min
+&gt;&gt;&gt; from tours.models import Tour
+&gt;&gt;&gt; 
+&gt;&gt;&gt; oldest_tour = Tour.objects.aggregate(Min('start_date'))
+&gt;&gt;&gt; print(oldest_tour['start_date__min'])
+2025-01-25
+&gt;&gt;&gt; 
+</code></pre>
+<h2 id="_8">Укажите самую позднюю дату бронирования</h2>
+<pre><code>&gt;&gt;&gt; from django.db.models import Max
+&gt;&gt;&gt; from tours.models import Reservation
+&gt;&gt;&gt; 
+&gt;&gt;&gt; latest_reservation_date = Reservation.objects.aggregate(Max('reservation_date'))
+&gt;&gt;&gt; print(latest_reservation_date['reservation_date__max'])
+2025-03-20 21:57:46.951696+00:00
+&gt;&gt;&gt; 
+</code></pre>
+<h2 id="_9">Выведите количество туров для каждого агентства:</h2>
+<pre><code>&gt;&gt;&gt; from django.db.models import Count
+&gt;&gt;&gt; from tours.models import TourAgency
+&gt;&gt;&gt; tour_counts = TourAgency.objects.annotate(num_tours=Count('tour'))
+&gt;&gt;&gt; for agency in tour_counts:
+...     print(f&quot;Агентство: {agency.name}, Количество туров: {agency.num_tours}&quot;)
+... 
+Агентство: Sunshine Travels, Количество туров: 0
+Агентство: Adventure Co., Количество туров: 0
+Агентство: Летайте с нами!, Количество туров: 0
+Агентство: &quot;FUN&amp;SUN&quot;, Количество туров: 0
+Агентство: &quot;Библио Глобус&quot;, Количество туров: 0
+Агентство: &quot;КОРАЛ Трэвэл&quot;, Количество туров: 0
+Агентство: Luxury Getaways, Количество туров: 0
+Агентство: &quot;Планета Сочи&quot;, Количество туров: 0
+Агентство: Sunshine, Количество туров: 0
+Агентство: Luxury Getaways, Количество туров: 0
+Агентство: &quot;Пегас Туристик&quot;, Количество туров: 0
+Агентство: Горячо не только летом, Количество туров: 2
+Агентство: &quot;Балкан&quot;, Количество туров: 0
+Агентство: Adventure Co., Количество туров: 0
+Агентство: &quot;Лучший Турист&quot;, Количество туров: 1
+Агентство: Sunshine Travels, Количество туров: 0
+&gt;&gt;&gt; 
+</code></pre>
+<h2 id="5">Подсчитайте количество туров с рейтингом 5</h2>
+<pre><code>&gt;&gt;&gt; 
+&gt;&gt;&gt; from django.db.models import Count
+&gt;&gt;&gt; from tours.models import Tour
+&gt;&gt;&gt; tours_with_rating_5 = Tour.objects.filter(reviews__rating=5).count()
+&gt;&gt;&gt; print(f&quot;Количество туров с рейтингом 5: {tours_with_rating_5}&quot;)
+Количество туров с рейтингом 5: 1
+&gt;&gt;&gt; 
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../lab4/" class="btn btn-neutral float-left" title="Laboratory 4"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../lab4/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
